@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<mapper namespace="com.klink.mapper.CompanyMapper">
+
+	<resultMap type="Company" id="companyMap">
+		<id column="id" javaType="long" property="id"/>
+		<result column="name" javaType="String" property="name"/>
+	</resultMap>
+
+	<select id="selectCompany" parameterType="long" resultType="Company" resultMap="companyMap">
+		SELECT
+			ID, NAME
+		FROM
+			KLINK.COMPANY
+		WHERE
+			id = #{id}
+	</select>
+
+	<select id="selectCompanyByName" parameterType="String" resultType="Company" resultMap="companyMap">
+		SELECT
+			ID, NAME
+		FROM
+			KLINK.COMPANY
+		WHERE
+			name = #{name}
+	</select>
+
+	<insert id="insertCompany" parameterType="com.klink.dto.InsertCompanyDto">
+		<selectKey order="BEFORE" keyProperty="company.id" resultType="java.lang.Long">
+			SELECT NEXT VALUE FOR klink.company_id FROM DUAL AS ID
+		</selectKey>
+		INSERT INTO KLINK.COMPANY
+		( ID, NAME )
+		values
+		(	#{company.id, jdbcType=BIGINT},
+			#{company.name, jdbcType=VARCHAR}
+		)
+	</insert>
+
+	
+</mapper>

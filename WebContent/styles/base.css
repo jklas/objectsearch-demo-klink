@@ -1,0 +1,67 @@
+@CHARSET "ISO-8859-1";
+
+body {
+	background: url('../images/background.png');
+}
+
+.personDescription {
+	color: white;
+	font: 100% "Lucida Sans Unicode", "Bitstream Vera Sans", "Trebuchet Unicode MS", "Lucida Grande", Verdana, Helvetica, sans-serif;
+	padding-top: 40px;
+}
+
+.pageText {
+	color: white;
+	font: 100% "Lucida Sans Unicode", "Bitstream Vera Sans", "Trebuchet Unicode MS", "Lucida Grande", Verdana, Helvetica, sans-serif;
+	padding-top: 40px;
+}
+
+.searchResults {
+	list-style-type: none;
+	vertical-align: middle;
+}
+
+/*
+.centeredImage {
+	text-align: center;
+	display: block;
+}
+
+.topBar {
+	background-color: rgb(10, 100, 200); width: 100%;
+	float: top;
+	height: 45px; 
+}
+
+.topButton {
+	background: none repeat scroll 0% 0% transparent; color: white; border: medium none;
+}
+
+.topProfileButton {
+	position: fixed;
+	left: 20px;
+	top: 19px; 
+}
+
+.topNewFriendButton {
+	position: fixed;
+	left: 100px;
+	top: 19px;
+}
+
+.topSearchButton {
+	background: none repeat scroll 0% 0% transparent; color: white; border: medium none;
+	position: relative;
+	left: 200px;
+	right: 19px;
+}
+
+.topSearchBox {
+	right: 20px;
+	border: none;
+	color:grey;
+	height:23px;
+	position:fixed;
+	top:17px; 
+}
+*/

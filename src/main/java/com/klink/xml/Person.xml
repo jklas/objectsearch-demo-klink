@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+	PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+	"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+<mapper namespace="com.klink.mapper.PersonMapper">
+
+	<resultMap id="personResultMap" type="Person">	
+		<constructor>
+			<idArg column="id" javaType="long" />
+			<arg column="first_name" javaType="String" />
+			<arg column="last_name" javaType="String" />
+			<arg column="email" javaType="String" />
+		</constructor>
+		<id property="id" column="id" />
+		<result property="firstName" column="first_name" />
+		<result property="lastName" column="last_name" />
+		<result property="email" column="email" />
+		<association property="company" column="company_id" 
+			javaType="Company" select="com.klink.mapper.CompanyMapper.selectCompany" />
+		<collection property="contacts" javaType="ArrayList"
+			column="id" ofType="Person" select="selectContacts" />
+	</resultMap>
+
+	<select id="existsPersonById" parameterType="int" resultType="int">
+		SELECT COUNT(id) FROM KLINK.Person WHERE id = #{id} 
+	</select>
+
+	<select id="selectPasswordByMail" parameterType="String" resultType="String">
+		select password	from KLINK.Person where email = #{email} 		
+	</select>
+
+	<select id="selectPersonByMail" parameterType="String" resultType="Person" resultMap="personResultMap">
+		select
+		id, first_name, last_name, email, company_id
+		from
+		KLINK.Person where email = #{mail}		
+	</select>
+
+	<select id="selectPerson" parameterType="int" resultType="Person" resultMap="personResultMap">
+		select
+		id, first_name, last_name, email, company_id
+		from
+		KLINK.Person where id = #{id}		
+	</select>
+
+	<select id="selectContacts" parameterType="int" resultType="Person" resultMap="personResultMap">
+		select
+		p.id, p.first_name, p.last_name, p.email
+		from
+		KLINK.Contact c, KLINK.Person p
+		where
+		c.from_id = #{id} and
+		c.to_id = p.id
+	</select>
+
+	<select id="selectByCompany" parameterType="int" resultType="Person" resultMap="personResultMap">
+		select
+		id, first_name, last_name, email
+		from
+		KLINK.Person where company_id = #{id}
+	</select>
+
+	<select id="retrieveAll" resultType="Person"
+		resultMap="personResultMap" fetchSize="100">
+		select id, first_name, last_name, email
+		from KLINK.Person
+	</select>
+
+
+	<insert id="insertPerson" parameterType="com.klink.dto.InsertPersonDto">
+		<selectKey order="BEFORE" resultType="java.lang.Long" keyProperty="person.id" >
+			SELECT NEXT VALUE FOR klink.person_id FROM DUAL AS ID
+		</selectKey>
+		
+		INSERT INTO KLINK.PERSON
+		( ID, FIRST_NAME, LAST_NAME, PASSWORD, EMAIL, COMPANY_ID )
+		values
+		(	#{person.id,jdbcType=BIGINT},
+			#{person.firstName,jdbcType=VARCHAR},
+			#{person.lastName,jdbcType=VARCHAR},
+			#{password,jdbcType=VARCHAR},
+			#{person.email,jdbcType=VARCHAR},
+			#{person.company.id,jdbcType=BIGINT} 	);
+			
+	</insert>
+	
+	<insert id="insertContact" parameterType="com.jklas.search.util.Pair">
+		INSERT INTO KLINK.Contact(FROM_ID , TO_ID)
+		VALUES (#{first,jdbcType=BIGINT}, #{second,jdbcType=BIGINT});		
+	</insert>
+		
+	<delete id="deletePerson" parameterType="int">
+		DELETE FROM KLINK.Person WHERE id = #{id}
+	</delete>
+	
+	<delete id="deleteContacts" parameterType="int">
+		DELETE FROM KLINK.Contact WHERE from_id = #{id} OR to_id = #{id}
+	</delete>		
+</mapper>

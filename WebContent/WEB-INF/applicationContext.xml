@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+
+<beans>
+	<bean id="IBatis3Interceptor" class="com.jklas.search.interceptors.ibatis.Ibatis3Interceptor">
+    	<property  name="searchInterceptor"  ref="SearchInterceptor" />
+    </bean>    	
+    
+    	
+    <bean id="IBatisHelper" class="com.klink.IBatisHelper">
+    	<constructor-arg><value>com/klink/Configuration.xml</value></constructor-arg>
+    	<property name="sampleDb"><value></value></property>
+    </bean>
+    	
+	<bean id="SearchInterceptor" class="com.jklas.search.interceptors.SearchInterceptor">
+		<constructor-arg ref="OnlineIndexer"/>
+	</bean>
+	
+	<bean id="OnlineIndexer" class="com.jklas.search.indexer.online.OnlineIndexer">
+		<constructor-arg ref="DefaultIndexerService"/>
+	</bean>
+		
+	<bean id="DefaultIndexerService" class="com.jklas.search.indexer.DefaultIndexerService">
+		<constructor-arg ref="DefaultIndexingPipeline"/>
+		<constructor-arg ref="IndexWriterFactory"/>
+	</bean>
+	 
+	<bean id="DefaultIndexingPipeline" class="com.jklas.search.indexer.pipeline.DefaultIndexingPipeline"/>	
+	
+	<bean id="IndexWriterFactory" class="com.jklas.search.index.berkeley.BerkeleyIndexWriterFactory"/>
+		
+</beans>

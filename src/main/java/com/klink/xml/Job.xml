@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<mapper namespace="com.klink.mapper.JobMapper">
+
+	<resultMap type="Job" id="jobMapper">
+		<id column="id" javaType="long" property="id"/>
+		<result column="title" javaType="String" property="title"/>
+	</resultMap>
+
+	<select id="selectJob" parameterType="int" resultType="com.klink.domain.Job">
+		select * from KLINK.JOB where id = #{id}
+	</select>
+	
+	<insert id="insertJob" parameterType="long" >
+		
+	</insert>	
+</mapper>

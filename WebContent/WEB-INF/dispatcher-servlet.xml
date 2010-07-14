@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+
+<!--
+  - DispatcherServlet application context for Petclinic's web tier.
+-->
+
+<beans>
+
+	<import resource="applicationContext.xml"/>
+
+	<!-- ========================= MESSAGE SOURCE DEFINITION =========================
+-->
+	<!--
+		- Message source for this context, loaded from localized "messages_xx" files.
+		- Could also reside in the root application context, as it is generic,
+		- but is currently just used within Petclinic's web tier.
+    -->
+	<bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource">
+		<property name="basename"><value>messages</value></property>
+	</bean>
+
+	<!-- ========================= MAPPING DEFINITIONS =========================
+-->
+	<!--
+	  - This bean provides explicit View mappings in a resource bundle instead of the
+	  - default InternalResourceViewResolver. It fetches the view mappings from
+	  - localized "views_xx" classpath files, i.e. "/WEB-INF/classes/views.properties"
+	  - or "/WEB-INF/classes/views_de.properties".
+	  -
+	  - Symbolic view names returned by Controllers will be resolved by this bean
+	  - using the respective properties file, which defines arbitrary mappings between
+	  - view names and resources.
+	-->
+	<bean id="viewResolver" class="org.springframework.web.servlet.view.ResourceBundleViewResolver">
+		<property name="basename"><value>views</value></property>		
+	</bean>
+
+	<!--
+	  - This bean resolves specific types of exception to corresponding error views.
+		- The default behaviour of DispatcherServlet is to propagate all exceptions to the
+		- servlet container: This will happen here with all other types of exception.
+	-->
+	<bean id="exceptionResolver" class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">
+		<property name="exceptionMappings">
+			<props>
+				<prop key="org.springframework.dao.DataAccessException">dataAccessFailure</prop>
+				<prop key="org.springframework.transaction.TransactionException">dataAccessFailure</prop>
+			</props>
+		</property>
+	</bean>
+
+	<bean id="urlMapping" class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">	
+		<property name="mappings">
+			<props>
+				<prop key="/profile.htm">profileController</prop>
+				<prop key="/home.htm">homeController</prop>
+				<prop key="/search.htm">searchResultsController</prop>
+				<prop key="/addContact.htm">addContactController</prop>				
+				<prop key="/login.htm">loginController</prop>
+				<prop key="/logout.htm">logoutController</prop>
+				<prop key="/signup.htm">signupController</prop>
+			</props>
+		</property>
+	</bean>
+	
+	<bean id="profileController" class="com.klink.controller.ProfileController">
+			<property name="iBatisHelper" ref="IBatisHelper"/>
+	</bean>
+
+	<bean id="signupController" class="com.klink.controller.SignupController">
+			<property name="iBatisHelper" ref="IBatisHelper"/>
+	</bean>
+
+	<bean id="homeController" class="com.klink.controller.HomeController">
+		<property name="iBatisHelper" ref="IBatisHelper"/>		
+	</bean>
+
+	<bean id="searchResultsController" class="com.klink.controller.SearchController">
+		<property name="iBatisHelper" ref="IBatisHelper"/>
+		<property name="baseDir"><value>/home/julian/idx/</value></property>
+	</bean>
+	
+	<bean id="addContactController" class="com.klink.controller.AddContactController">
+			<property name="iBatisHelper" ref="IBatisHelper"/>
+	</bean>
+
+	<bean id="loginController" class="com.klink.controller.LoginController">
+		<property name="iBatisHelper" ref="IBatisHelper"/>
+	</bean>
+	
+	<bean id="logoutController" class="com.klink.controller.LogoutController">
+	</bean>
+</beans>
