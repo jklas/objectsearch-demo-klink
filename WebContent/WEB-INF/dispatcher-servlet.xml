@@ -79,7 +79,7 @@
 
 	<bean id="searchResultsController" class="com.klink.controller.SearchController">
 		<property name="iBatisHelper" ref="IBatisHelper"/>
-		<property name="baseDir"><value>idx/</value></property>
+		<property name="baseDir"><value>/home/julian/idx/</value></property>
 	</bean>
 	
 	<bean id="addContactController" class="com.klink.controller.AddContactController">
