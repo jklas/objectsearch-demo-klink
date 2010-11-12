@@ -16,7 +16,7 @@ import org.springframework.web.servlet.mvc.Controller;
 
 import com.jklas.search.engine.VectorSearch;
 import com.jklas.search.engine.dto.VectorRankedResult;
-import com.jklas.search.engine.score.VectorRanker;
+import com.jklas.search.engine.score.DefaultVectorRanker;
 import com.jklas.search.index.berkeley.BerkeleyGlobalPropertyEditor;
 import com.jklas.search.index.berkeley.BerkeleyIndexReaderFactory;
 import com.jklas.search.query.vectorial.VectorQuery;
@@ -53,7 +53,7 @@ public class SearchController implements Controller {
 		VectorSearch vectorSearch = new VectorSearch(query, BerkeleyIndexReaderFactory.getInstance());
 		long totalTime = System.currentTimeMillis() - init;
 
-		List<VectorRankedResult> results = vectorSearch.search(new VectorRanker());
+		List<VectorRankedResult> results = vectorSearch.search(new DefaultVectorRanker());
 
 		Map<String, Object> model = new HashMap<String,Object>();
 
